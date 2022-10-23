@@ -6,10 +6,13 @@ app = Flask(__name__)
 
 lista_usuarios = ['andriel', 'alexandre', 'oliveira']
 
+
 app.config['SECRET_KEY'] = 'e3af64a50713936d82691a3739ec6bb9'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///comunidade.db'
 
 database = SQLAlchemy(app)
+
+app.config['SECRET_KEY'] = 'XXXXXXXXXXXXXXXXXX'
 
 @app.route("/")
 def home():
