@@ -2,7 +2,7 @@ from flask import render_template, request, flash, redirect, url_for
 from comunidadeimpressionadora.forms import FormLogin, FormCriarConta
 from comunidadeimpressionadora import app, database, bcrypt
 from comunidadeimpressionadora.models import Usuario, Post
-from flask_login import login_user
+from flask_login import login_user, logout_user, current_user, login_required
 
 lista_usuarios = ['andriel', 'alexandre', 'oliveira']
 
@@ -18,6 +18,7 @@ def contatos():
 
 
 @app.route("/usuarios")
+@login_required
 def usuarios():
     return render_template('usuarios.html', lista_usuarios=lista_usuarios)
 
@@ -33,7 +34,11 @@ def login():
             if usuario and bcrypt.check_password_hash(usuario.senha, form_login.senha.data):
                 login_user(usuario, remember=form_login.lembrar_dados.data)
                 flash(f'Login feito com sucesso no e-mail {form_login.email.data}', 'alert-success')
-                return redirect(url_for('home'))
+                next = request.args.get('next')
+                if next:
+                    return redirect(next)
+                else:
+                    return redirect(url_for('home'))
             else:
                 flash(f'Email ou senha incorretos.', 'alert-danger')
     if form_criar_conta.validate_on_submit() and 'btn_submit_criar_conta' in request.form:
@@ -46,3 +51,24 @@ def login():
             flash(f'Conta criada com sucesso no e-mail {form_criar_conta.email.data}', 'alert-success')
             return redirect(url_for('home'))
     return render_template('login.html', form_login=form_login, form_criar_conta=form_criar_conta)
+
+
+@app.route("/sair")
+@login_required
+def sair():
+    logout_user()
+    flash(f'Logout feito com sucesso', 'alert-success')
+    return redirect(url_for("home"))
+
+
+@app.route("/perfil")
+@login_required
+def perfil():
+    foto_perfil = url_for('static', filename='fotos_perfil/{}'.format(current_user.foto_perfil))
+    return render_template('perfil.html', foto_perfil=foto_perfil)
+
+
+@app.route("/post/criar")
+@login_required
+def criar_post():
+    return render_template('criarpost.html')
