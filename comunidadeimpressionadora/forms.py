@@ -25,3 +25,9 @@ class FormLogin(FlaskForm):
     btn_submit_login = SubmitField('Fazer Login')
 
 
+class FormEditarPerfil(FlaskForm):
+    username = StringField('Nome do Usuário', validators=[DataRequired(), Length(5, 20)])
+    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    btn_submit_editar = SubmitField('Confirmar edição')
+
+

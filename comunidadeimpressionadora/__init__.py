@@ -6,7 +6,7 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'XXXXXXXXXXXXXXXX'
+app.config['SECRET_KEY'] = 'XXXXXXXXXXXXXXXXXXXXX'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///comunidade.db'
 
