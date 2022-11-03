@@ -7,7 +7,7 @@
         <hr>
         <div class="row">
             <div class="col">
-                <form method="POST" action="" class="border p-4 mt-2">
+                <form method="POST" action="" class="border p-4 mt-2" enctype="multipart/form-data">
                     {{ form.csrf_token }}
                     <legend>Editar Perfil</legend>
                     <fieldset>
@@ -37,6 +37,25 @@
                                 {{ form.email(class="form-control") }}
                             {% endif %}
                         </div>
+                        <div class="form-group">
+                            {{ form.foto_perfil.label }}
+                            {{ form.foto_perfil(class="form-control-file") }}
+                            {% if foto_perfil.errors %}
+                                {% for erro in form.foto_perfil.errors %}
+                                    <span class="text-danger">{{ erro }}</span><br>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <hr>
+                        <p>Cursos</p>
+                            {% for botao in form %}
+                                {% if 'curso_' in botao.name %}
+                                    <div class="form-group">
+                                        {{ botao(class="form-check-input") }}
+                                        {{ botao.label(class="form-check-label") }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                     </fieldset>
                     {{ form.btn_submit_editar(class="btn btn-primary mt-2") }}
                 </form>
